@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import RegistrationForm from '../components/RegistrationForm/RegistrationForm';
 
 const RegistrationPage: React.FC = () => {
@@ -7,7 +7,9 @@ const RegistrationPage: React.FC = () => {
         <div>
             <h1>Registration Page</h1>
             <RegistrationForm />
-            <Link to="/booking">Go to Booking</Link>
+            {/*<Link to="/booking">Go to Booking</Link>*/}
+
+
         </div>
     );
 };

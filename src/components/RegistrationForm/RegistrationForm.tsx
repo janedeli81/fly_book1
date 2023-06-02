@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {Box, Button, Modal, TextField} from "@mui/material";
+import {Link} from "react-router-dom";
 
 interface User {
     email: string;
@@ -150,7 +151,7 @@ const SignUp = () => {
                 </Box>
             </Modal>
             <Button  type="submit" variant="contained" color="primary">
-                Go to booking!
+                <Link to="/booking">Go to Booking</Link>
             </Button>
         </form>
     );
