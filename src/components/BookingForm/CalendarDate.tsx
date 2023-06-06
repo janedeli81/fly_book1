@@ -9,10 +9,10 @@ import {
     DialogTitle,
     TextField
 } from "@mui/material";
-import CalendarDateProps from "./PropsCalendar";
+import DateProps from "./PropsCalendar";
 
 
-const CalendarDate: React.FC<CalendarDateProps> = ({ date }) => {
+const CalendarDate: React.FC<DateProps> = ({ date }) => {
     const calendarCellStyle = {
         border: '1px solid #ccc',
         borderRadius: '4px',

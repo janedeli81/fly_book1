@@ -7,6 +7,7 @@ interface User {
     password: string;
 }
 
+
 // Styles+
 // Eslint
 // move currentUserEmail to function args
@@ -17,6 +18,8 @@ interface User {
 // Comments for regexp+
 
 let currentUserEmail: string = '';
+// const usersJson = localStorage.getItem("users")
+
 const SignUp = () => {
     const [user, setUser] = useState<User>({ email: '', password: '' });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -30,12 +33,18 @@ const SignUp = () => {
         textAlign: 'center'
     }
 
-
     function isFirstSignUp() {
         const usersJson = localStorage.getItem("users");
         const usersArr = JSON.parse(usersJson || '[]');
         return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
     }
+
+
+    // function isFirstSignUp() {
+    //     const usersJson = localStorage.getItem("users");
+    //     const usersArr = JSON.parse(usersJson || '[]');
+    //     return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
+    // }
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +77,8 @@ const SignUp = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const passwordErrors = validatePassword(user.password);
+        // let currentUserEmail: string = user.email;
+
         currentUserEmail = user.email;
         let existingUsers: User[];
 

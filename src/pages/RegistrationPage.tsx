@@ -6,7 +6,7 @@ const RegistrationPage: React.FC = () => {
     return (
         <div>
             <h1>Registration Page</h1>
-            <RegistrationForm />
+            <RegistrationForm/>
             {/*<Link to="/booking">Go to Booking</Link>*/}
 
 

@@ -1,5 +1,5 @@
 
-export default interface CalendarDateProps {
+export default interface DateProps {
     date: number;
 };
 export default interface CalendarProps {
