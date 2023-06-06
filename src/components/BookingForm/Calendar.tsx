@@ -4,10 +4,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { format, addMonths, subMonths } from 'date-fns';
 import CalendarDate from './CalendarDate';
+import CalendarProps from './PropsCalendar';
 
-interface CalendarProps {
-    startDate: Date;
-}
+
 
 const Calendar: React.FC<CalendarProps> = ({ startDate = new Date() }) => {
     const [currentMonth, setCurrentMonth] = useState(startDate);
@@ -29,7 +28,7 @@ const Calendar: React.FC<CalendarProps> = ({ startDate = new Date() }) => {
 
     const renderCalendar = () => {
         const daysInMonth = getDaysInMonth(currentMonth);
-        const monthStart = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
+        // const monthStart:number = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
 
         const calendarContainerStyle = {
             display: 'flex',
@@ -53,14 +52,14 @@ const Calendar: React.FC<CalendarProps> = ({ startDate = new Date() }) => {
 
         const calendarCells = [];
 
-        // Fill in empty cells before the start of the month
-        for (let i = 0; i < monthStart; i++) {
-            calendarCells.push(<CalendarDate key={`empty-${i}`} date={0}/>);
-        }
+        // // Fill in empty cells before the start of the month
+        // for (let i = 0; i < monthStart; i++) {
+        //     calendarCells.push(<CalendarDate key={`empty-${i}`} date={0}/>);
+        // }
 
         // Render days of the month
         for (let day = 1; day <= daysInMonth; day++) {
-            calendarCells.push(<CalendarDate key={`day-${day}`} date={day} />);
+            calendarCells.push(<CalendarDate key={`day-${day}`} date={day}  startDate={new Date()}/>);
         }
 
         return (

@@ -6,7 +6,7 @@ export default function BookingForm(){
     return(
         <div>
             <FormatSelect/>
-            <Calendar startDate={new Date()}/>
+            <Calendar startDate={new Date()} date={0}/>
         </div>
     )
 }

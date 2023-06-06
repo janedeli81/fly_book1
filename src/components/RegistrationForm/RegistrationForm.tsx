@@ -7,50 +7,35 @@ interface User {
     password: string;
 }
 
+// Styles+
+// Eslint
+// move currentUserEmail to function args
+// Formatting (state to the top)+
+// localstorage helpers
+// extract types to separate file+
+// function 'return' usage
+// Comments for regexp+
+
 let currentUserEmail: string = '';
 const SignUp = () => {
     const [user, setUser] = useState<User>({ email: '', password: '' });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
+
+    const boxStyle = {
+        width: 300, p: 2,
+        borderRadius: '4px',
+        textAlign: 'center'
+    }
+
 
     function isFirstSignUp() {
         const usersJson = localStorage.getItem("users");
         const usersArr = JSON.parse(usersJson || '[]');
         return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
     }
-
-
-
-
-    // function registerNewUser() {
-    //
-    // }
-    //
-    // function goToMainPage() {
-    //
-    // }
-    //
-    // function isUserPasswordSame() {
-    //     return false;
-    // }
-    //
-    // function showLoginErrow() {
-    //
-    // }
-    //
-    // if (isFirstSignUp()) {
-    //     //- якщо юзер входить вперше - це означає реєстрацію + авто вхід.
-    //     registerNewUser();
-    //     goToMainPage();
-    // } else {
-    //     if (isUserPasswordSame()) {
-    //         // - якщо юзер входить не вперше - перевіряємо чи співпадають паролі (дістаємо існуючих юзеров з local storage),
-    //         goToMainPage();
-    //     } else {
-    //         // якщо ні - показуємо помилку входу.
-    //         showLoginErrow();
-    //     }
-    //
-    // }
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +48,9 @@ const SignUp = () => {
 
     const validatePassword = (password: string) => {
         const errors: { [key: string]: string } = {};
+        //string contains at least one digit,
+        // one lowercase letter, and one uppercase letter,
+        // consists of 8 to 36 alphanumeric characters.
         const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,36}$/;
 
         if (!regex.test(password)) {
@@ -110,8 +98,6 @@ const SignUp = () => {
     };
 
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -144,7 +130,7 @@ const SignUp = () => {
                 helperText={errors.password}
             />
             <Modal open={isModalOpen} onClose={closeModal}>
-                <Box sx={{ width: 300, p: 2, bgcolor: 'background.paper', borderRadius: '4px', textAlign: 'center' }}>
+                <Box sx={boxStyle}>
                     <h2>Modal Title</h2>
                     <p>{modalMessage}</p>
                     <Button variant="contained" onClick={closeModal}>Close</Button>
