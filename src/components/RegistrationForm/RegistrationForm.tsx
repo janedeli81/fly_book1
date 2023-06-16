@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import {Box, Button, Modal, TextField} from "@mui/material";
+import {
+    Box,
+    Button,
+    IconButton,
+    InputAdornment,
+    Modal,
+    TextField
+} from "@mui/material";
 import {Link} from "react-router-dom";
+
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 interface User {
     email: string;
@@ -25,6 +34,7 @@ const SignUp = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
 
     const boxStyle = {
@@ -38,14 +48,6 @@ const SignUp = () => {
         const usersArr = JSON.parse(usersJson || '[]');
         return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
     }
-
-
-    // function isFirstSignUp() {
-    //     const usersJson = localStorage.getItem("users");
-    //     const usersArr = JSON.parse(usersJson || '[]');
-    //     return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
-    // }
-
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -66,18 +68,15 @@ const SignUp = () => {
             errors.password =
                 'Password must be between 8 and 36 characters long and contain at least one digit, one lowercase letter, and one uppercase letter.';
         }
-
         if (/[а-яА-ЯЁё]/.test(password)) {
             errors.password = 'Password cannot contain Cyrillic characters.';
         }
-
         return errors;
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const passwordErrors = validatePassword(user.password);
-        // let currentUserEmail: string = user.email;
 
         currentUserEmail = user.email;
         let existingUsers: User[];
@@ -92,7 +91,9 @@ const SignUp = () => {
             if (isFirstSignUp()) {
                 existingUsers.push(user);
                 localStorage.setItem('users', JSON.stringify(existingUsers));
-            } else {
+            }
+            return
+            if(!isFirstSignUp()) {
                 const userExists = existingUsers.some(existingUser => existingUser.email === currentUserEmail);
                 if (userExists) {
                     const currentUser = existingUsers.find(existingUser => existingUser.email === currentUserEmail);
@@ -108,7 +109,9 @@ const SignUp = () => {
         }
     };
 
-
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -127,11 +130,11 @@ const SignUp = () => {
                 margin="normal"
                 fullWidth
             />
-            <TextField
 
+              <TextField
                 label="Password"
                 variant="outlined"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={user.password}
                 onChange={handleInputChange}
@@ -139,7 +142,16 @@ const SignUp = () => {
                 fullWidth
                 error={!!errors.password}
                 helperText={errors.password}
-            />
+                />
+            <InputAdornment
+                position="start" >
+                <IconButton onClick={handleTogglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+            </InputAdornment>
+
+
+
             <Modal open={isModalOpen} onClose={closeModal}>
                 <Box sx={boxStyle}>
                     <h2>Modal Title</h2>
@@ -147,10 +159,12 @@ const SignUp = () => {
                     <Button variant="contained" onClick={closeModal}>Close</Button>
                 </Box>
             </Modal>
-            <Button  type="submit" variant="contained" color="primary">
-                <Link to="/booking">Go to Booking</Link>
+            <Button type="submit" variant="contained" color="primary">
+                <Link  to="/booking">OK</Link>
             </Button>
         </form>
+
+
     );
 };
 
