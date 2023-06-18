@@ -23,10 +23,10 @@ interface User {
 // Formatting (state to the top)+
 // localstorage helpers
 // extract types to separate file+
-// function 'return' usage
+// function 'return' usage+
 // Comments for regexp+
 
-let currentUserEmail: string = '';
+// let currentUserEmail: string = '';
 // const usersJson = localStorage.getItem("users")
 
 const SignUp = () => {
@@ -37,17 +37,15 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
 
 
+
+
     const boxStyle = {
         width: 300, p: 2,
         borderRadius: '4px',
         textAlign: 'center'
     }
 
-    function isFirstSignUp() {
-        const usersJson = localStorage.getItem("users");
-        const usersArr = JSON.parse(usersJson || '[]');
-        return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
-    }
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -72,28 +70,38 @@ const SignUp = () => {
             errors.password = 'Password cannot contain Cyrillic characters.';
         }
         return errors;
-    };
+    }
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const currentUserEmail = user.email;
         const passwordErrors = validatePassword(user.password);
-
-        currentUserEmail = user.email;
         let existingUsers: User[];
+
+        function isFirstSignUp() {
+            const usersJson = localStorage.getItem("users");
+            const usersArr = JSON.parse(usersJson || '[]');
+            return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
+        }
 
         if (Object.keys(passwordErrors).length) {
             setErrors(passwordErrors);
+            setTimeout(() => {
+                setErrors({});
+            }, 2000); // 2-second timeout for password errors
         } else {
-            let usersArrayJson = localStorage.getItem('users');
+            const usersArrayJson = localStorage.getItem('users');
 
-            existingUsers = JSON.parse(usersArrayJson || '[]');
+           existingUsers = JSON.parse(usersArrayJson || '[]');
 
             if (isFirstSignUp()) {
                 existingUsers.push(user);
                 localStorage.setItem('users', JSON.stringify(existingUsers));
             }
-            return
-            if(!isFirstSignUp()) {
+            return;
+
+            if (!isFirstSignUp()) {
                 const userExists = existingUsers.some(existingUser => existingUser.email === currentUserEmail);
                 if (userExists) {
                     const currentUser = existingUsers.find(existingUser => existingUser.email === currentUserEmail);
