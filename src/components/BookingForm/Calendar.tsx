@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { format, addMonths, subMonths } from 'date-fns';
 import CalendarDate from './CalendarDate';
-import CalendarProps from './PropsCalendar';
+import {CalendarProps} from './types';
 
 
 
@@ -59,7 +59,7 @@ const Calendar: React.FC<CalendarProps> = ({ startDate = new Date() }) => {
 
         // Render days of the month
         for (let day = 1; day <= daysInMonth; day++) {
-            calendarCells.push(<CalendarDate key={`day-${day}`} date={day}  startDate={new Date()}/>);
+            calendarCells.push(<CalendarDate key={`day-${day}`} date={day}/>);
         }
 
         return (

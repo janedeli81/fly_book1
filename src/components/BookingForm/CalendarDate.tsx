@@ -9,7 +9,7 @@ import {
     DialogTitle,
     TextField
 } from "@mui/material";
-import DateProps from "./PropsCalendar";
+import {DateProps} from "./types";
 
 
 const CalendarDate: React.FC<DateProps> = ({ date }) => {

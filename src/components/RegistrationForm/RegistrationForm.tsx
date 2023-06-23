@@ -10,6 +10,7 @@ import {
 import {Link} from "react-router-dom";
 
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {storage} from "../../shared/storage";
 
 interface User {
     email: string;
@@ -29,21 +30,17 @@ interface User {
 // let currentUserEmail: string = '';
 // const usersJson = localStorage.getItem("users")
 
+const boxStyle = {
+    width: 300, p: 2,
+    borderRadius: '4px',
+    textAlign: 'center'
+}
 const SignUp = () => {
     const [user, setUser] = useState<User>({ email: '', password: '' });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-
-
-
-    const boxStyle = {
-        width: 300, p: 2,
-        borderRadius: '4px',
-        textAlign: 'center'
-    }
 
 
 
@@ -79,11 +76,7 @@ const SignUp = () => {
         const passwordErrors = validatePassword(user.password);
         let existingUsers: User[];
 
-        function isFirstSignUp() {
-            const usersJson = localStorage.getItem("users");
-            const usersArr = JSON.parse(usersJson || '[]');
-            return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
-        }
+
 
         if (Object.keys(passwordErrors).length) {
             setErrors(passwordErrors);
@@ -91,28 +84,29 @@ const SignUp = () => {
                 setErrors({});
             }, 2000); // 2-second timeout for password errors
         } else {
-            const usersArrayJson = localStorage.getItem('users');
 
-           existingUsers = JSON.parse(usersArrayJson || '[]');
+            existingUsers = storage.getObjectFromStorage('users');
 
-            if (isFirstSignUp()) {
+
+            if (isFirstSignUp(currentUserEmail)) {
                 existingUsers.push(user);
                 localStorage.setItem('users', JSON.stringify(existingUsers));
+                return;
             }
-            return;
 
-            if (!isFirstSignUp()) {
-                const userExists = existingUsers.some(existingUser => existingUser.email === currentUserEmail);
-                if (userExists) {
-                    const currentUser = existingUsers.find(existingUser => existingUser.email === currentUserEmail);
-                    if (currentUser?.password === user.password) {
-                        setModalMessage('Password is the same');
-                    } else {
-                        setModalMessage('Wrong password');
-                    }
-                    setIsModalOpen(true);
-                }
+            const userExists = existingUsers.some(existingUser => existingUser.email === currentUserEmail);
+
+            if (!userExists) {
+                return;
             }
+            const currentUser = existingUsers.find(existingUser => existingUser.email === currentUserEmail);
+            if (currentUser?.password === user.password) {
+                setModalMessage('Password is the same');
+            } else {
+                setModalMessage('Wrong password');
+            }
+            setIsModalOpen(true);
+
             localStorage.setItem('currentUser', JSON.stringify(user));
         }
     };
@@ -175,5 +169,11 @@ const SignUp = () => {
 
     );
 };
+
+function isFirstSignUp(currentUserEmail:string) {
+    const usersJson = localStorage.getItem("users");
+    const usersArr = JSON.parse(usersJson || '[]');
+    return !usersArr.some((user: { email: string; }) => user.email === currentUserEmail);
+}
 
 export default SignUp;
