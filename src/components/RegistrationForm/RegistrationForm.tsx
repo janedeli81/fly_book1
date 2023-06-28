@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
     Box,
-    Button,
+    Button, FormControl,
     IconButton,
-    InputAdornment,
-    Modal,
+    InputAdornment, InputLabel,
+    Modal, OutlinedInput,
     TextField
 } from "@mui/material";
 import {Link} from "react-router-dom";
@@ -27,8 +27,6 @@ interface User {
 // function 'return' usage+
 // Comments for regexp+
 
-// let currentUserEmail: string = '';
-// const usersJson = localStorage.getItem("users")
 
 const boxStyle = {
     width: 300, p: 2,
@@ -41,9 +39,19 @@ const SignUp = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-
-
+    // function handleInputChange for 2 state - email & password:
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    //
+    // const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value } = e.target;
+    //     setEmail(value);
+    // };
+    //
+    // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { value } = e.target;
+    //     setPassword(value);
+    // };
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUser((prevState) => ({
@@ -111,6 +119,7 @@ const SignUp = () => {
         }
     };
 
+
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -118,7 +127,11 @@ const SignUp = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
+    // function for InputAdornment - ?moving to localstorage is not work with it.
+    // const handleClickShowPassword = () => setShowPassword((show) => !show);
+    //
+    // const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    //     event.preventDefault();
     return (
         <form onSubmit={handleSubmit}>
             <TextField
@@ -145,12 +158,28 @@ const SignUp = () => {
                 error={!!errors.password}
                 helperText={errors.password}
                 />
-            <InputAdornment
-                position="start" >
-                <IconButton onClick={handleTogglePasswordVisibility} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-            </InputAdornment>
+            {/*<FormControl variant="outlined" fullWidth>*/}
+            {/*    <InputLabel htmlFor="password">Password</InputLabel>*/}
+            {/*    <OutlinedInput*/}
+            {/*        id="password"*/}
+            {/*        type={showPassword ? 'text' : 'password'}*/}
+            {/*        name="password"*/}
+            {/*        endAdornment={*/}
+            {/*            <InputAdornment position="end">*/}
+            {/*                <IconButton*/}
+            {/*                    aria-label="toggle password visibility"*/}
+            {/*                    onClick={handleClickShowPassword}*/}
+            {/*                    onMouseDown={handleMouseDownPassword}*/}
+            {/*                    edge="end"*/}
+            {/*                >*/}
+            {/*                    {showPassword ? <VisibilityOff /> : <Visibility />}*/}
+            {/*                </IconButton>*/}
+            {/*            </InputAdornment>*/}
+            {/*        }*/}
+            {/*        label="Password"*/}
+            {/*    />*/}
+            {/*</FormControl>*/}
+
 
 
 
